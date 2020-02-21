@@ -1,33 +1,38 @@
-import React, {Component} from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 
-function Col(props) {
-    return (
-        <>
-            {props.cols.map(col => (
-                <td key={col}>{col}</td>
-            ))}
-        </>
-    )
-}
-
-class Table extends Component {
-    constructor(props) {
-        super(props);
-        this.tables = [['Hello', 'World'], ['Hi', 'CN']]
+class BaseComponent extends React.Component {
+    componentWillMount() {
+        console.log('BaseComponent will mount');
     }
-
+    componentDidMount() {
+        console.log('BaseComponent is mounted');
+    }
     render() {
         return (
-            <table>
-                {this.tables.map((row, index) => (
-                    <tr key={index}>
-                        <Col cols={row} />
-                    </tr>
-                ))}
-            </table>
+            <button>{this.props.context}</button>
         )
     }
 }
 
-ReactDOM.render(<Table />, document.getElementById('root'));
+function discription(Component) {
+    return class Discription extends React.Component {
+        static displayName = `DiscriptionWith${Component.name || 'Component'}`;
+        componentWillMount() {
+            console.log('HOC will mount');
+        }
+        componentDidMount() {
+            console.log('HOC is mounted');
+        }
+        render() {
+            return <Component {...this.props} />
+        }
+    }
+}
+
+const DisBase = discription(BaseComponent)
+
+ReactDOM.render(
+    <DisBase context="click!" />,
+    document.getElementById('root')
+)
