@@ -1,57 +1,33 @@
-import React from 'react'
+import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 
-// function FancyBtn(props) {
-//     const {forwardRef, ...rest} = props;
-//     return (<button ref={forwardRef} {...rest} />)
-// }
-
-// const Fbtn = React.forwardRef((props, ref) => (
-//     <button ref={ref} {...props}></button>
-// ))
-
-// class FancyButton extends React.Component {
-//     render() {
-//         const {forwardRef, ...rest} = this.props;
-//         return <button ref={forwardRef} {...rest} />
-//     }
-// }
-
-function logProps(Component) {
-    class LogProps extends React.Component {
-        render() {
-            const {forwardedRef, ...rest} = this.props;
-            //将自定义的prop属性 'forwardedRef' 定义为ref
-            return <Component ref={forwardedRef} {...rest} />
-        }
-    }
-    return React.forwardRef((props, ref) => {
-        return <LogProps {...props} forwardedRef={ref} />
-    })
+function Col(props) {
+    return (
+        <>
+            {props.cols.map(col => (
+                <td key={col}>{col}</td>
+            ))}
+        </>
+    )
 }
 
-class Btn extends React.Component {
-    focus() {
-        console.log('focus')
-    }
-    render() {
-        return <button {...this.props}>click!</button>
-    }
-}
-
-const Hoc = logProps(Btn);
-
-class App extends React.Component {
+class Table extends Component {
     constructor(props) {
         super(props);
-        this.ref = React.createRef();
+        this.tables = [['Hello', 'World'], ['Hi', 'CN']]
     }
-    click = () => {
-        console.log(this.ref);
-    }
+
     render() {
-        return <Hoc onClick={this.click} ref={this.ref} />
+        return (
+            <table>
+                {this.tables.map((row, index) => (
+                    <tr key={index}>
+                        <Col cols={row} />
+                    </tr>
+                ))}
+            </table>
+        )
     }
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<Table />, document.getElementById('root'));
