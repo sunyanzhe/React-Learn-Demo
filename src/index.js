@@ -1,35 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
-
-class FileInput extends React.Component {
-    constructor(props) {
-        super(props);
-        this.fileInput = React.createRef()
-        this.state = {fileName: ''}
-    }
-    handleSubmit = e => {
-        e.preventDefault();
-        console.log(this.fileInput.current.files[0].name);
-        this.setState({
-            fileName: this.fileInput.current.files[0].name
-        })
-    }
-    render() {
-        return (
-            <form onSubmit={this.handleSubmit}>
-                {this.state.fileName && <h1>{this.state.fileName}</h1>}
-                <label>
-                    Upload file:
-                    <input type="file" multiple ref={this.fileInput} />
-                </label>
-                <br />
-                <button type="submit">submit</button>
-            </form>
-        )
-    }
+function Counter({initialCount}) {
+    const [count, setCount] = useState(initialCount);
+    return (
+        <>
+            Count: {count}
+            <button onClick={() => setCount(initialCount)}>Reset</button>
+            <button onClick={() => setCount(prevCount => prevCount - 1)}>-</button>
+            <button onClick={() => setCount(count + 1)}>+</button>
+        </>
+    )
 }
 
-ReactDOM.render(
-    <FileInput />,
-    document.getElementById('root')
-)
+ReactDOM.render(<Counter initialCount={0} />, document.getElementById('root'));
